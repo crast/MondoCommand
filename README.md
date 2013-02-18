@@ -6,7 +6,9 @@ MondoCommand is a library for Bukkit applications which lets you create a comman
 It also abstracts out a lot of the annoying things about doing subcommands, like return values, argument handling, and so on to help you write shorter, cleaner code (and split it up nicely too).
 
 
-**Basic usage:**
+Basic usage
+-----------
+
 ```java
 // Basic setup and registration
 MondoCommand base = new MondoCommand();
@@ -76,7 +78,39 @@ The output of running sub-sub commands looks lke this:
 
 ![Usage example 3](http://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage3.png)
 
-**Coming soon**:
+Using with Maven
+----------------
+
+Add this repository:
+```xml
+    <repository>
+      <id>crast-repo</id>
+      <url>http://maven.crast.us</url>
+    </repository>
+```
+
+And this dependency:
+```xml
+    <dependency>
+      <groupId>us.crast</groupId>
+      <artifactId>MondoCommand</artifactId>
+      <version>0.1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+```
+
+And also remember to shade the package so that there's no conflicts with other plugins
+
+```xml
+<relocation>
+  <pattern>mondocommand</pattern>
+  <shadedPattern>me.something.your-project-name.mondocommand</shadedPattern>
+</relocation>
+```
+
+Coming soon
+-----------
 
  * Comprehensive Documentation
  * Support for easily customizing colors in MondoCommand

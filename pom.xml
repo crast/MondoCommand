@@ -19,6 +19,13 @@
     <developerConnection>scm:git:ssh://git@github.com/crast/MondoCommand.git</developerConnection>
     <url>https://github.com/Bukkit/CraftBukkit</url>
   </scm>
+  <distributionManagement>
+    <repository>
+      <id>archiva.internal</id>
+      <name>Internal Release Repository</name>
+      <url>http://localhost:5700/archiva/repository/internal/</url>
+    </repository>
+  </distributionManagement>
 
 
   <repositories>
