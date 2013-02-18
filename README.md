@@ -44,16 +44,31 @@ base.addSub("destroy", "housebuilder.destroy")
 base.addSub("version")
 	.allowConsole()
 	.setDescription("Get HouseBuilder version")
-	.setHandler(
-	new SubHandler() {
+	.setHandler(new SubHandler() {
 		public void handle(CallInfo call) {
 			call.append("HouseBuilder Version {RED}1.0.5")
 		}
 	});
 ```
 
+MondoCommand now also supports doing sub-sub commands by nesting one MondoCommand as a sub of the base (and in theory can handle as many levels as you want)
+
+```java
+MondoCommand colorSub = new MondoCommand("MyHouseBuilder");
+base.addSub("color")
+	.setDescription("Manage colors")
+	.setUsage("[add/remove] <color>")
+	.setHandler(colorSub);
+
+colorSub.addSub("add")
+	.setDescription("Add Colors");
+
+colorSub.addSub("remove")
+	.setDescription("Remove colors");
+// and so on
+```
+
 **Coming soon**:
 
- * Sub-Sub-commands support
  * Comprehensive Documentation
  * An "installer" to repackage this into your java project's namespace.

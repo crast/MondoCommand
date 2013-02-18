@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.Conversable;
 
 /** 
@@ -42,6 +43,10 @@ public final class ChatMagic {
 			return translated;
 		}
 		
+	}
+	
+	public static void send(CommandSender sender, String template, Object ... args) {
+	    sender.sendMessage(colorize(template, args));
 	}
 	
 	public static void send(Conversable c, String template, Object ... args) {
