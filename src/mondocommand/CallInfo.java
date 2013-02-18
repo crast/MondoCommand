@@ -1,6 +1,5 @@
 package mondocommand;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -19,7 +18,6 @@ public class CallInfo {
     private final SubCommand subCommand;
 
     private List<String> args;
-    private List<String> messages;
 
     /**
      * Create a new CallInfo representing one command invocaion.
@@ -38,7 +36,6 @@ public class CallInfo {
         this.args = args;
         this.baseCommand = baseCommand;
         this.subCommand = subCommand;
-        this.messages = new ArrayList<String>();
     }
 
     /** 
@@ -83,28 +80,20 @@ public class CallInfo {
     }
 
     /**
-     * Add a message to the call, interpolating colors and variables.
+     * Respond to the call, interpolating colors and variables.
      * @param template A string template. see @class ColorMagic documentation.
      * @param args Zero or more arguments to interpolate the template
      */
-    public void append(String template, Object ... args) {
-        messages.add(ChatMagic.colorize(template, args));
+    public void reply(String template, Object ... args) {
+        ChatMagic.send(sender, template, args);
     }
     
     /**
-     * Add a plain message to this call
+     * Reply to the sender with no formatting
      * @param message a simple string.
      */
-    public void appendPlain(String message) {
-        messages.add(message);
-    }
-
-    /**
-     * Get the list of messages for this call.
-     * @return The list of messages.
-     */
-    public List<String> getMessages() {
-        return messages;
+    public void replyPlain(String message) {
+        sender.sendMessage(message);
     }
 
     public String getBaseCommand() {

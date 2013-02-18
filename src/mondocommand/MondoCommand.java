@@ -42,7 +42,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
     }
     
 
-    /** Implement the SubHandler interface so we can do sub-sub commands et al. */
+    /** Implement the SubHandler interface so we can do sub-sub commands and such. */
     @Override
     public void handle(CallInfo call) throws MondoFailure {
         String commandLabel = call.getBaseCommand() + " " + call.getSubCommand().getName();
@@ -78,10 +78,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
         try {
             sub.getHandler().handle(call);
         } catch (MondoFailure e) {
-            call.append("{ERROR}%s", e.getMessage());
-        }
-        for (String message: call.getMessages()) {
-            sender.sendMessage(message);
+            call.reply("{ERROR}%s", e.getMessage());
         }
         return;
     }
@@ -120,10 +117,6 @@ public class MondoCommand implements CommandExecutor, SubHandler {
     
     public SubCommand addSub(String name) {
         return addSub(name, null);
-    }
-
-    public SubCommand addSub(String name, String permission, SubHandler handler) {
-        return addSub(name, permission).setHandler(handler);
     }
     
     private List<SubCommand> availableCommands(CommandSender sender, Player player) {

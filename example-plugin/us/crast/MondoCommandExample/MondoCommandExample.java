@@ -45,9 +45,9 @@ public class MondoCommandExample extends JavaPlugin {
                     if (houseMap.containsKey(houseName)) {
                         houseMap.remove(houseName);
                         // MondoCommand allows you to add messages with color formatting
-                        call.append("{GREEN}House {GOLD}%s{GREEN} removed", houseName);
+                        call.reply("{GREEN}House {GOLD}%s{GREEN} removed", houseName);
                     } else {
-                        call.append("{RED}House %s not found", houseName);
+                        call.reply("{RED}House %s not found", houseName);
                     }
                 }
             });
@@ -58,7 +58,7 @@ public class MondoCommandExample extends JavaPlugin {
             .setDescription("Get HouseBuilder version")
             .setHandler(new SubHandler() {
                 public void handle(CallInfo call) {
-                    call.append("HouseBuilder Version {RED}1.0.5");
+                    call.reply("HouseBuilder Version {RED}1.0.5");
                 }
             });
        
@@ -83,7 +83,7 @@ public class MondoCommandExample extends JavaPlugin {
             .setHandler(new SubHandler() {
                 public void handle(CallInfo call) throws MondoFailure {
                     if (call.getArg(0).equals("HI")) {
-                        call.append("Got the {GREEN}right {LIGHT_PURPLE}stuff");
+                        call.reply("Got the {GREEN}right {LIGHT_PURPLE}stuff");
                         return;
                     }
                     throw new MondoFailure("Add Color failed");
