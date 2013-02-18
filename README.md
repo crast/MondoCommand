@@ -29,9 +29,9 @@ base.addSub("destroy", "housebuilder.destroy")
 	.setHandler(new SubHandler() {
 		// This is an example of how to do handlers in-line.
 		public void handle(CallInfo call) {
-			String houseName = call.getArg(1);
-			if (houseMap.containsKey(houseName) {
-				houseMap.remove(houseName)
+			String houseName = call.getArg(0);
+			if (houseMap.containsKey(houseName)) {
+				houseMap.remove(houseName);
 				// MondoCommand allows you to add messages with color formatting
 				call.append("{GREEN}House {GOLD}%s{GREEN} removed", houseName);
 			} else {
@@ -46,7 +46,7 @@ base.addSub("version")
 	.setDescription("Get HouseBuilder version")
 	.setHandler(new SubHandler() {
 		public void handle(CallInfo call) {
-			call.append("HouseBuilder Version {RED}1.0.5")
+			call.append("HouseBuilder Version {RED}1.0.5");
 		}
 	});
 ```

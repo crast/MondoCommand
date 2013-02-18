@@ -1,0 +1,14 @@
+name: MondoCommandExample
+main: us.crast.MondoCommandExample.MondoCommandExample
+version: 0.1
+author: Crast
+description: "Sort your items into appropriate chests"
+website: "http://github.com/crast/MondoCommand"
+
+
+commands:
+    housebuilder:
+        description: "HouseBuilder commands"
+        aliases: [house]
+
+# vim: ts=4 sw=4 sts=4 expandtab

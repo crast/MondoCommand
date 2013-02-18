@@ -5,7 +5,11 @@
 *.war
 *.ear
 
+# Java dirs
+bin/
+
 # Misc files
 *.swp
 .project
 .classpath
+makejar.sh
