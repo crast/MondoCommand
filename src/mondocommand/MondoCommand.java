@@ -19,15 +19,12 @@ import org.bukkit.entity.Player;
  */
 public class MondoCommand implements CommandExecutor, SubHandler {
     private static final String PERMISSION_WARNING_TEXT = "Stop being sneaky.";
-    private final String appName;
     private Map<String, SubCommand> subcommands = new LinkedHashMap<String, SubCommand>();
     
     /**
      * Create a new MondoCommand, used for dynamic sub command handling.
-     * @param appName The name of the app, used in prefixes to some messages.
      */
-    public MondoCommand(String appName) {
-        this.appName = appName;
+    public MondoCommand() {
         registerColorAliases();
     }
 
@@ -70,7 +67,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
             showUsage(sender, player, commandLabel);
             return;
         } else if (!sub.checkPermission(sender)) {
-            ChatMagic.send(sender, "{HEADER}%s: {WARNING}" + PERMISSION_WARNING_TEXT, appName);
+            ChatMagic.send(sender, "{WARNING}" + PERMISSION_WARNING_TEXT);
             return;
         } else if ((args.size() - 1) < sub.getMinArgs()) {
             ChatMagic.send(sender, "{HEADER}Usage: {GREEN}%s %s {USAGE}%s", commandLabel, sub.getName(), sub.getUsage());
