@@ -5,13 +5,13 @@ MondoCommand is a library for Bukkit applications which lets you create a comman
 
 It also abstracts out a lot of the annoying things about doing subcommands, like return values, argument handling, and so on to help you write shorter, cleaner code (and split it up nicely too).
 
-Basic usage:
+
+**Basic usage:**
 ```java
 // Basic setup and registration
 MondoCommand base = new MondoCommand();
 getCommand("housebuilder").setExecutor(base);
 
-/** Add sub-commands and their handlers. */
 
 // Add sub-command build which requires permission "housebuilder.build"
 base.addSub("build", "housebuilder.build")
@@ -51,6 +51,9 @@ base.addSub("version")
 	});
 ```
 
+This creates an output which looks like this:
+![Usage example](https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png)
+
 MondoCommand now also supports doing sub-sub commands by nesting one MondoCommand as a sub of the base (and in theory can handle as many levels as you want)
 
 ```java
@@ -67,6 +70,9 @@ colorSub.addSub("remove")
 	.setDescription("Remove colors");
 // and so on
 ```
+
+The output of running sub-sub commands looks lke this:
+![Usage example 3](http://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage3.png)
 
 **Coming soon**:
 
