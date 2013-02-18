@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +17,7 @@ public class MondoCommand implements CommandExecutor {
 	
 	public MondoCommand(String appName) {
 	    this.appName = appName;
+	    registerColorAliases();
 	}
 
 	@Override
@@ -88,5 +90,14 @@ public class MondoCommand implements CommandExecutor {
 			}
 		}
 		return items;
+	}
+	
+	/** This is hacky and should be configurable by the library user in the future */
+	private void registerColorAliases() {
+	    ChatMagic.registerAlias("{USAGE}", ChatColor.LIGHT_PURPLE);
+        ChatMagic.registerAlias("{WARNING}", ChatColor.DARK_RED);
+        ChatMagic.registerAlias("{ERROR}", ChatColor.RED);
+        ChatMagic.registerAlias("{NOUN}", ChatColor.AQUA);
+        ChatMagic.registerAlias("{VERB}", ChatColor.GRAY);
 	}
 }
