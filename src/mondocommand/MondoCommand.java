@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 public class MondoCommand implements CommandExecutor, SubHandler {
     private static final String PERMISSION_WARNING_TEXT = "Stop being sneaky.";
     private Map<String, SubCommand> subcommands = new LinkedHashMap<String, SubCommand>();
+    private static final SubHandler fallbackHandler = new FallbackHandler();
     
     /**
      * Create a new MondoCommand, used for dynamic sub command handling.
@@ -110,7 +111,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
     }
     
     public SubCommand addSub(String name, String permission) {
-        SubCommand cmd = new SubCommand(name, permission);
+        SubCommand cmd = new SubCommand(name, permission).setHandler(fallbackHandler);
         subcommands.put(name.toLowerCase(), cmd);
         return cmd;
     }
@@ -138,5 +139,13 @@ public class MondoCommand implements CommandExecutor, SubHandler {
         ChatMagic.registerAlias("{ERROR}", ChatColor.RED);
         ChatMagic.registerAlias("{NOUN}", ChatColor.AQUA);
         ChatMagic.registerAlias("{VERB}", ChatColor.GRAY);
+    }
+}
+
+final class FallbackHandler implements SubHandler {
+
+    @Override
+    public void handle(CallInfo call) throws MondoFailure {
+        throw new MondoFailure("This SubHandler does not have an appropriate handler registered.");
     }
 }
