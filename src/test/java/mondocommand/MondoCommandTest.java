@@ -1,0 +1,5 @@
+package mondocommand;
+
+class MondoCommandTest {
+
+}
