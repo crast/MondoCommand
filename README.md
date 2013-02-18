@@ -8,7 +8,7 @@ It also abstracts out a lot of the annoying things about doing subcommands, like
 Basic usage:
 ```java
 // Basic setup and registration
-MondoCommand base = new MondoCommand("MyHouseBuilder");
+MondoCommand base = new MondoCommand();
 getCommand("housebuilder").setExecutor(base);
 
 /** Add sub-commands and their handlers. */
@@ -54,7 +54,7 @@ base.addSub("version")
 MondoCommand now also supports doing sub-sub commands by nesting one MondoCommand as a sub of the base (and in theory can handle as many levels as you want)
 
 ```java
-MondoCommand colorSub = new MondoCommand("MyHouseBuilder");
+MondoCommand colorSub = new MondoCommand();
 base.addSub("color")
 	.setDescription("Manage colors")
 	.setUsage("[add/remove] <color>")
@@ -71,4 +71,5 @@ colorSub.addSub("remove")
 **Coming soon**:
 
  * Comprehensive Documentation
+ * Support for easily customizing colors in MondoCommand
  * An "installer" to repackage this into your java project's namespace.

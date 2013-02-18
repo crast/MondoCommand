@@ -9,77 +9,77 @@ import org.bukkit.command.CommandSender;
  *
  */
 public final class SubCommand {
-	private final String name;
+    private final String name;
     private final String permission;
-	private boolean allow_console = false;
-	private int minArgs = 0;
-	private SubHandler handler = null;
-	private String description;
-	private String usage = null;
-	
-	public SubCommand(String name, String permission) {
-	    Validate.notEmpty(name);
-		this.name = name;
-		this.permission = permission;
-	}
-	
-	public SubCommand allowConsole() {
-		this.allow_console = true;
-		return this;
-	}
-	
-	public boolean isConsoleAllowed() {
-		return this.allow_console;
-	}
+    private boolean allow_console = false;
+    private int minArgs = 0;
+    private SubHandler handler = null;
+    private String description;
+    private String usage = null;
+    
+    public SubCommand(String name, String permission) {
+        Validate.notEmpty(name);
+        this.name = name;
+        this.permission = permission;
+    }
+    
+    public SubCommand allowConsole() {
+        this.allow_console = true;
+        return this;
+    }
+    
+    public boolean isConsoleAllowed() {
+        return this.allow_console;
+    }
 
-	public int getMinArgs() {
-		return minArgs;
-	}
+    public int getMinArgs() {
+        return minArgs;
+    }
 
-	public SubCommand setMinArgs(int minArgs) {
-	    Validate.isTrue(minArgs >= 0, "minArgs cannot be negative");
-		this.minArgs = minArgs;
-		return this;
-	}
+    public SubCommand setMinArgs(int minArgs) {
+        Validate.isTrue(minArgs >= 0, "minArgs cannot be negative");
+        this.minArgs = minArgs;
+        return this;
+    }
 
-	public SubHandler getHandler() {
-		return handler;
-	}
+    public SubHandler getHandler() {
+        return handler;
+    }
 
-	public SubCommand setHandler(SubHandler handler) {
-	    Validate.notNull(handler);
-		this.handler = handler;
-		return this;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getUsage() {
-		return this.usage;
-	}
+    public SubCommand setHandler(SubHandler handler) {
+        Validate.notNull(handler);
+        this.handler = handler;
+        return this;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getUsage() {
+        return this.usage;
+    }
 
     public String getPermission() {
         return permission;
     }
-	
-	public SubCommand setUsage(String usage) {
-		this.usage = usage;
-		return this;
-	}
+    
+    public SubCommand setUsage(String usage) {
+        this.usage = usage;
+        return this;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public SubCommand setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-	
-	public boolean checkPermission(CommandSender sender) {
-	    if (permission == null) return true;
-	    return sender.hasPermission(permission);
-	}
+    public SubCommand setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+    
+    public boolean checkPermission(CommandSender sender) {
+        if (permission == null) return true;
+        return sender.hasPermission(permission);
+    }
 }
