@@ -1,0 +1,114 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>us.crast</groupId>
+  <artifactId>MondoCommand</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1-SNAPSHOT</version>
+  <name>MondoCommand</name>
+  <url>https://github.com/crast/MondoCommand</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <api.version>unknown</api.version>
+    <junit.version>4.11</junit.version>
+  </properties>
+
+  <scm>
+    <connection>scm:git:git://github.com/crast/MondoCommand.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/crast/MondoCommand.git</developerConnection>
+    <url>https://github.com/Bukkit/CraftBukkit</url>
+  </scm>
+
+
+  <repositories>
+    <repository>
+      <id>repobo-snap</id>
+      <url>http://repo.bukkit.org/content/groups/public</url>
+    </repository>
+    <repository>
+      <id>vault-repo</id>
+      <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>bukkit-plugins</id>
+      <url>http://repo.bukkit.org/content/groups/public</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.2.5-R5.0</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
+  <build>
+    <defaultGoal>clean install</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Implementation-Title>MondoCommand</Implementation-Title>
+              <Implementation-Version>${describe}</Implementation-Version>
+              <Implementation-Vendor>James Crasta</Implementation-Vendor>
+              <Specification-Title>MondoCommand</Specification-Title>
+              <Specification-Version>${api.version}</Specification-Version>
+              <Specification-Vendor>James Crasta</Specification-Vendor>
+              <Sealed>true</Sealed>
+            </manifestEntries>
+            <manifestSections>
+              <manifestSection>
+                <name>mondocommand/</name>
+                <manifestEntries>
+                  <Sealed>true</Sealed>
+                </manifestEntries>
+              </manifestSection>
+            </manifestSections>
+          </archive>
+        </configuration>
+       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
