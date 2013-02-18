@@ -4,3 +4,8 @@
 *.jar
 *.war
 *.ear
+
+# Misc files
+*.swp
+.project
+.classpath
