@@ -52,6 +52,7 @@ base.addSub("version")
 ```
 
 This creates an output which looks like this:
+
 ![Usage example](https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png)
 
 MondoCommand now also supports doing sub-sub commands by nesting one MondoCommand as a sub of the base (and in theory can handle as many levels as you want)
@@ -72,6 +73,7 @@ colorSub.addSub("remove")
 ```
 
 The output of running sub-sub commands looks lke this:
+
 ![Usage example 3](http://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage3.png)
 
 **Coming soon**:
