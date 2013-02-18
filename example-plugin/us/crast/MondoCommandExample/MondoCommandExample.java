@@ -20,7 +20,7 @@ public class MondoCommandExample extends JavaPlugin {
     }
 
     private void setupCommandHandlers() {
-        MondoCommand base = new MondoCommand("MyHouseBuilder");
+        MondoCommand base = new MondoCommand();
         getCommand("housebuilder").setExecutor(base);
 
         /** Add sub-commands and their handlers. */
@@ -62,7 +62,7 @@ public class MondoCommandExample extends JavaPlugin {
                 }
             });
        
-        MondoCommand colorSub = new MondoCommand("MyHouseBuilder");
+        MondoCommand colorSub = new MondoCommand();
         base.addSub("color")
             .setDescription("Manage colors")
             .setUsage("[add/remove] <color>")
