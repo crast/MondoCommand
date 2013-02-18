@@ -12,6 +12,7 @@ public class MondoCommandTest {
     @Test
     public void testInitialize() {
         MondoCommand c = new MondoCommand();
+        // I am a comment
         assertEquals("foo", c.addSub("foo").getName());
     }
 }
