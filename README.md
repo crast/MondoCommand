@@ -72,4 +72,5 @@ colorSub.addSub("remove")
 
  * Comprehensive Documentation
  * Support for easily customizing colors in MondoCommand
+ * Support for long-help screens for commands.
  * An "installer" to repackage this into your java project's namespace.

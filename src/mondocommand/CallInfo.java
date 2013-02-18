@@ -38,7 +38,7 @@ public class CallInfo {
         this.subCommand = subCommand;
     }
 
-    /** 
+    /**
      * Get the player who invoked this. Can be null if running at the console.
      * @return a Player, or null if this is a console command
      */
@@ -53,7 +53,7 @@ public class CallInfo {
     public CommandSender getSender() {
         return sender;
     }
-    
+
     /**
      * Get a specific argument.
      * @param index The argument number.
@@ -62,7 +62,7 @@ public class CallInfo {
     public String getArg(int index) {
         return this.args.get(index);
     }
-    
+
     /**
      * Get the whole list of command arguments.
      * @return List of arguments.
@@ -70,7 +70,7 @@ public class CallInfo {
     public List<String> getArgs() {
         return this.args;
     }
-    
+
     /**
      * How many arguments we got.
      * @return Number of arguments
@@ -80,22 +80,9 @@ public class CallInfo {
     }
 
     /**
-     * Respond to the call, interpolating colors and variables.
-     * @param template A string template. see @class ColorMagic documentation.
-     * @param args Zero or more arguments to interpolate the template
+     * Get the base command which was called for this sub-command call.
+     * @return A base command string.
      */
-    public void reply(String template, Object ... args) {
-        ChatMagic.send(sender, template, args);
-    }
-    
-    /**
-     * Reply to the sender with no formatting
-     * @param message a simple string.
-     */
-    public void replyPlain(String message) {
-        sender.sendMessage(message);
-    }
-
     public String getBaseCommand() {
         return baseCommand;
     }
@@ -106,5 +93,22 @@ public class CallInfo {
      */
     public SubCommand getSubCommand() {
         return subCommand;
+    }
+
+    /**
+     * Respond to the call, interpolating colors and variables.
+     * @param template A string template. see @class ColorMagic documentation.
+     * @param args Zero or more arguments to interpolate the template
+     */
+    public void reply(String template, Object ... args) {
+        ChatMagic.send(sender, template, args);
+    }
+
+    /**
+     * Reply to the sender with no formatting
+     * @param message a simple string.
+     */
+    public void replySimple(String message) {
+        sender.sendMessage(message);
     }
 }
