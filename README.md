@@ -6,7 +6,7 @@ MondoCommand is a library for Bukkit applications which lets you create a comman
 It also abstracts out a lot of the annoying things about doing subcommands, like return values, argument handling, and so on to help you write shorter, cleaner code (and split it up nicely too).
 
 Basic usage:
-
+```java
 	// Basic setup and registration
 	MondoCommand base = new MondoCommand("MyHouseBuilder");
 	getCommand("housebuilder").setExecutor(base);
@@ -39,3 +39,10 @@ Basic usage:
 				}
 			}
 		});
+```
+
+**Coming soon**:
+
+ * Sub-Sub-commands support
+ * Comprehensive Documentation
+ * An "installer" to repackage this into your java project's namespace.
