@@ -37,6 +37,7 @@ public class FormatConfig {
      * @return the same FormatConfig, for chaining.
      */
     public FormatConfig setPermissionWarning(String permissionWarning) {
+        Validate.notNull(permissionWarning);
         this.permissionWarning = permissionWarning;
         return this;
     }
@@ -47,6 +48,7 @@ public class FormatConfig {
      * @return the same FormatConfig, for chaining.
      */
     public FormatConfig setUsageHeading(String usageHeading) {
+        Validate.notNull(usageHeading);
         this.usageHeading = usageHeading;
         return this;
     }
@@ -57,6 +59,7 @@ public class FormatConfig {
      * @return the same FormatConfig, for chaining
      */
     public FormatConfig setReplyPrefix(String replyPrefix) {
+        Validate.notNull(replyPrefix);
         this.replyPrefix = replyPrefix;
         return this;
     }
@@ -76,6 +79,7 @@ public class FormatConfig {
         ChatMagic.registerDefaultAlias("{ERROR}", ChatColor.RED);
         ChatMagic.registerDefaultAlias("{NOUN}", ChatColor.AQUA);
         ChatMagic.registerDefaultAlias("{VERB}", ChatColor.GRAY);
+        ChatMagic.registerDefaultAlias("{MCMD}", ChatColor.GREEN);
         ChatMagic.registerDefaultAlias("{DESCRIPTION}", ChatColor.BLUE);
     }
 
@@ -98,7 +102,7 @@ public class FormatConfig {
             usage = ChatMagic.colorize(" {USAGE}%s", sub.getUsage());
         }
         ChatMagic.send(sender,
-            "{GREEN}%s %s%s {DESCRIPTION}%s",
+            "{MCMD}%s {VERB}%s%s {DESCRIPTION}%s",
             commandLabel,
             sub.getName(),
             usage,
