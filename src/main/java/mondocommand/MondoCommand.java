@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,7 +38,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
     public MondoCommand(FormatConfig formatter) {
         Validate.notNull(formatter);
         this.formatter = formatter;
-        registerColorAliases();
+        formatter.registerColorAliases();
     }
 
     /** Implement onCommand so this can be registered as a CommandExecutor */
@@ -155,16 +154,6 @@ public class MondoCommand implements CommandExecutor, SubHandler {
             }
         }
         return items;
-    }
-    
-    /** This is hacky and should be configurable by the library user in the future */
-    private void registerColorAliases() {
-        ChatMagic.registerAlias("{HEADER}", ChatColor.GOLD);
-        ChatMagic.registerAlias("{USAGE}", ChatColor.LIGHT_PURPLE);
-        ChatMagic.registerAlias("{WARNING}", ChatColor.DARK_RED);
-        ChatMagic.registerAlias("{ERROR}", ChatColor.RED);
-        ChatMagic.registerAlias("{NOUN}", ChatColor.AQUA);
-        ChatMagic.registerAlias("{VERB}", ChatColor.GRAY);
     }
 }
 

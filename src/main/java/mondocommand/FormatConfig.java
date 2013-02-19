@@ -1,5 +1,7 @@
 package mondocommand;
 
+import org.bukkit.ChatColor;
+
 /** 
  * Allow customizing response strings from MondoCommand. 
  * 
@@ -54,5 +56,21 @@ public class FormatConfig {
     public FormatConfig setReplyPrefix(String replyPrefix) {
         this.replyPrefix = replyPrefix;
         return this;
+    }
+
+    /**
+     * Register MondoCommand color aliases upon initialization of the MondoCommand.
+     * 
+     * This method doesn't make much sense to be called by the user right now, 
+     * it's here to support future functionality and/or user customization where colors
+     * are concerned.
+     */
+    public void registerColorAliases() {
+        ChatMagic.registerDefaultAlias("{HEADER}", ChatColor.GOLD);
+        ChatMagic.registerDefaultAlias("{USAGE}", ChatColor.LIGHT_PURPLE);
+        ChatMagic.registerDefaultAlias("{WARNING}", ChatColor.DARK_RED);
+        ChatMagic.registerDefaultAlias("{ERROR}", ChatColor.RED);
+        ChatMagic.registerDefaultAlias("{NOUN}", ChatColor.AQUA);
+        ChatMagic.registerDefaultAlias("{VERB}", ChatColor.GRAY);
     }
 }
