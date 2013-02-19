@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,8 +20,9 @@ import org.bukkit.entity.Player;
  */
 public class MondoCommand implements CommandExecutor, SubHandler {
     private static final FormatConfig BASE_FORMAT = new FormatConfig();
-    private Map<String, SubCommand> subcommands = new LinkedHashMap<String, SubCommand>();
     private static final SubHandler fallbackHandler = new FallbackHandler();
+
+    private final Map<String, SubCommand> subcommands = new LinkedHashMap<String, SubCommand>();
     private final FormatConfig formatter;
     
     /**
@@ -35,6 +37,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
      * @param formatter Configuration on how to format responses.
      */
     public MondoCommand(FormatConfig formatter) {
+        Validate.notNull(formatter);
         this.formatter = formatter;
         registerColorAliases();
     }
@@ -97,8 +100,8 @@ public class MondoCommand implements CommandExecutor, SubHandler {
 
     /**
      * Show the usage for this command.
-     * @param sender
-     * @param player 
+     * @param sender A CommandSender who is requesting the usage.
+     * @param player A Player object (can be null)
      * @param commandLabel The current command label.
      * @param slash An empty string if there should be a slash prefix, a slash otherwise.
      */
@@ -122,12 +125,23 @@ public class MondoCommand implements CommandExecutor, SubHandler {
         }
     }
     
+    /**
+     * Add a sub-command to this MondoCommand.
+     * @param name The name of this sub-command.
+     * @param permission The permission string of a permission to check for this command.
+     * @return a new SubCommand.
+     */
     public SubCommand addSub(String name, String permission) {
         SubCommand cmd = new SubCommand(name, permission).setHandler(fallbackHandler);
         subcommands.put(name.toLowerCase(), cmd);
         return cmd;
     }
     
+    /**
+     * Add a sub-command to this MondoCommand.
+     * @param name the name of this sub-command.
+     * @return a new SubCommand.
+     */
     public SubCommand addSub(String name) {
         return addSub(name, null);
     }
