@@ -8,11 +8,11 @@ public interface SubHandler {
     /**
      * Handle a call from a SubCommand.
      * 
-     * The passed in call has a number of properties, including the Player
+     * <p>The passed in call has a number of properties, including the Player
      * (if applicable), CommandSender, information on the SubCommand, and
      * any additional arguments passed.
      * 
-     * If the handler throws a MondoFailure, then the failure's message is
+     * <p>If the handler throws a {@link MondoFailure}, then the failure's message is
      * printed to the command sender.
      * 
      * @param call Contains all the information about the call.
