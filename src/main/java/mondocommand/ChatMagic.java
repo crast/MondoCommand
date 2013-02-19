@@ -26,6 +26,7 @@ public final class ChatMagic {
     
     public static void registerAlias(String verb, ChatColor color) {
         colorMap.put(verb, color.toString());
+        translationMap.clear();
     }
     
     public static String colorize(String template, Object ... args) {

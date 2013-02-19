@@ -114,7 +114,7 @@ And this dependency:
     </dependency>
 ```
 
-And also remember to shade the package so that there's no conflicts with other plugins
+And also remember to shade the package so that there's no conflicts with other plugins.
 ```xml
 <relocation>
   <pattern>mondocommand</pattern>
