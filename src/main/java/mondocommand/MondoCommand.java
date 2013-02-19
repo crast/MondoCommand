@@ -109,18 +109,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
         ChatMagic.send(sender, headerFormat, commandLabel);
 
         for (SubCommand sub: availableCommands(sender, player)) {
-            String usage = "";
-            if (sub.getUsage() != null) {
-                usage = ChatMagic.colorize(" {USAGE}%s", sub.getUsage());
-            }
-            ChatMagic.send(
-                sender,
-                "{GREEN}%s %s%s {BLUE}%s",
-                commandLabel,
-                sub.getName(),
-                usage,
-                sub.getDescription()
-            );
+            formatter.writeUsageLine(sender, commandLabel, sub);
         }
     }
     

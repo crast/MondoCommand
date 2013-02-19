@@ -1,6 +1,8 @@
 package mondocommand;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 /** 
  * Allow customizing response strings from MondoCommand. 
@@ -11,6 +13,7 @@ public class FormatConfig {
     private String permissionWarning = "{WARNING}You do not have permissions for this command.";
     private String usageHeading = "{HEADER}Usage: ";
     private String replyPrefix = "";
+
     public FormatConfig() {
         
     }
@@ -58,6 +61,7 @@ public class FormatConfig {
         return this;
     }
 
+
     /**
      * Register MondoCommand color aliases upon initialization of the MondoCommand.
      * 
@@ -72,5 +76,33 @@ public class FormatConfig {
         ChatMagic.registerDefaultAlias("{ERROR}", ChatColor.RED);
         ChatMagic.registerDefaultAlias("{NOUN}", ChatColor.AQUA);
         ChatMagic.registerDefaultAlias("{VERB}", ChatColor.GRAY);
+        ChatMagic.registerDefaultAlias("{DESCRIPTION}", ChatColor.BLUE);
+    }
+
+    /**
+     * Write out one entry of the usage output.
+     * 
+     * <p>This method exists so that users can subclass it and do their own
+     * formatting of MondoCommand's usage output. It's the responsibility of
+     * this method to also send the usage output, this way customized line wrapping,
+     * multi-line messages, etc can be implemented.
+     * 
+     * @param sender The CommandSender requesting usage.
+     * @param commandLabel The current base command label. Will be prefixed with a / if a player command.
+     * @param sub The SubCommand we're generating a usage screen for.
+     * @return A formatted single usage line.
+     */
+    public void writeUsageLine(CommandSender sender, String commandLabel, SubCommand sub) {
+        String usage = "";
+        if (sub.getUsage() != null) {
+            usage = ChatMagic.colorize(" {USAGE}%s", sub.getUsage());
+        }
+        ChatMagic.send(sender,
+            "{GREEN}%s %s%s {DESCRIPTION}%s",
+            commandLabel,
+            sub.getName(),
+            usage,
+            sub.getDescription()
+        );
     }
 }
