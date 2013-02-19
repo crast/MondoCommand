@@ -18,14 +18,24 @@ import org.bukkit.entity.Player;
  *
  */
 public class MondoCommand implements CommandExecutor, SubHandler {
-    private static final String PERMISSION_WARNING_TEXT = "Stop being sneaky.";
+    private static final FormatConfig BASE_FORMAT = new FormatConfig();
     private Map<String, SubCommand> subcommands = new LinkedHashMap<String, SubCommand>();
     private static final SubHandler fallbackHandler = new FallbackHandler();
+    private final FormatConfig formatter;
+    
+    /**
+     * Create a new MondoCommand with the base formatting specification.
+     */
+    public MondoCommand() {
+        this(BASE_FORMAT);
+    }
     
     /**
      * Create a new MondoCommand, used for dynamic sub command handling.
+     * @param formatter Configuration on how to format responses.
      */
-    public MondoCommand() {
+    public MondoCommand(FormatConfig formatter) {
+        this.formatter = formatter;
         registerColorAliases();
     }
 
@@ -68,14 +78,15 @@ public class MondoCommand implements CommandExecutor, SubHandler {
             showUsage(sender, player, commandLabel);
             return;
         } else if (!sub.checkPermission(sender)) {
-            ChatMagic.send(sender, "{WARNING}" + PERMISSION_WARNING_TEXT);
+            ChatMagic.send(sender, formatter.getPermissionWarning());
             return;
         } else if ((args.size() - 1) < sub.getMinArgs()) {
-            ChatMagic.send(sender, "{HEADER}Usage: {GREEN}%s %s {USAGE}%s", commandLabel, sub.getName(), sub.getUsage());
+            String usageFormat = formatter.getUsageHeading() + "{GREEN}%s %s {USAGE}%s";
+            ChatMagic.send(sender, usageFormat, commandLabel, sub.getName(), sub.getUsage());
             return;
         }
         List<String> callArgs = new ArrayList<String>(args.subList(1, args.size()));
-        CallInfo call = new CallInfo(sender, player, commandLabel, sub, callArgs);
+        CallInfo call = new CallInfo(sender, player, commandLabel, sub, callArgs, formatter);
         try {
             sub.getHandler().handle(call);
         } catch (MondoFailure e) {
@@ -92,7 +103,8 @@ public class MondoCommand implements CommandExecutor, SubHandler {
      * @param slash An empty string if there should be a slash prefix, a slash otherwise.
      */
     private void showUsage(CommandSender sender, Player player, String commandLabel) {
-        ChatMagic.send(sender, "{HEADER}Usage: %s <command> [<args>]", commandLabel);
+        String headerFormat = formatter.getUsageHeading() + "%s <command> [<args>]";
+        ChatMagic.send(sender, headerFormat, commandLabel);
 
         for (SubCommand sub: availableCommands(sender, player)) {
             String usage = "";

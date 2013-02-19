@@ -16,6 +16,7 @@ public class CallInfo {
     private final Player player;
     private final String baseCommand;
     private final SubCommand subCommand;
+    private final String replyPrefix;
 
     private List<String> args;
 
@@ -26,8 +27,9 @@ public class CallInfo {
      * @param baseCommand The label of the base command being executed (for reference)
      * @param subCommand The SubCommand we're executing.
      * @param args The command arguments.
+     * @param format 
      */
-    public CallInfo(CommandSender sender, Player player, String baseCommand, SubCommand subCommand, List<String> args) {
+    public CallInfo(CommandSender sender, Player player, String baseCommand, SubCommand subCommand, List<String> args, FormatConfig formatter) {
         Validate.notNull(sender);
         Validate.notEmpty(baseCommand);
         Validate.notNull(subCommand);
@@ -36,6 +38,7 @@ public class CallInfo {
         this.args = args;
         this.baseCommand = baseCommand;
         this.subCommand = subCommand;
+        this.replyPrefix = ChatMagic.colorize(formatter.getReplyPrefix());
     }
 
     /**
@@ -101,7 +104,11 @@ public class CallInfo {
      * @param args Zero or more arguments to interpolate the template
      */
     public void reply(String template, Object ... args) {
-        ChatMagic.send(sender, template, args);
+        if (replyPrefix.length() == 0) {
+            ChatMagic.send(sender, template, args);
+        } else {
+            ChatMagic.send(sender, replyPrefix + template, args);
+        }
     }
 
     /**
@@ -109,6 +116,6 @@ public class CallInfo {
      * @param message a simple string.
      */
     public void replySimple(String message) {
-        sender.sendMessage(message);
+        sender.sendMessage(replyPrefix + message);
     }
 }

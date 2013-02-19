@@ -11,8 +11,15 @@ public class MondoCommandTest {
     private MondoCommand cmd;
     public MondoCommandTest() {
         cmd = new MondoCommand();
-        cmd.addSub("default").setDescription("desc").allowConsole();
-        cmd.addSub("permissioned", "fooplugin.perm").setDescription("permissioned!").allowConsole();
+        addSubs(cmd);
+    }
+    public void addSubs(MondoCommand target) {
+        target.addSub("default")
+            .setDescription("desc")
+            .allowConsole();
+        target.addSub("permissioned", "fooplugin.perm")
+            .setDescription("permissioned!")
+            .allowConsole();
     }
 
     @Test
@@ -56,5 +63,24 @@ public class MondoCommandTest {
         cmd.onCommand(sender, null, "foo", args);
         assertEquals(1, sender.messages.size());
         assertEquals("This SubHandler does not have an appropriate handler registered.", sender.stripMessage(0));
+    }
+    
+    @Test
+    public void testWithFormatter() {
+        FormatConfig fmt = new FormatConfig()
+            .setUsageHeading("{BLUE}USG ")
+            .setReplyPrefix("{GOLD}Hi! {RESET}")
+            .setPermissionWarning("{RED}NO ACCESS.");
+        MondoCommand c = new MondoCommand(fmt);
+        addSubs(c);
+        c.onCommand(sender, null, "b", EMPTY_ARGS);
+        assertEquals(2, sender.messages.size());
+        assertEquals("USG b <command> [<args>]", sender.stripMessage(0));
+        c.onCommand(sender, null, "b", new String[] {"permissioned"});
+        assertEquals(3, sender.messages.size());
+        assertEquals("NO ACCESS.", sender.stripMessage(2));
+        c.onCommand(sender, null, "b", new String[] {"default"});
+        assertEquals(4, sender.messages.size());
+        assertEquals("Hi! This SubHandler does not have an appropriate handler registered.", sender.stripMessage(3));
     }
 }
