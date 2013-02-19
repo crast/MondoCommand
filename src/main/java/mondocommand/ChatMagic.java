@@ -86,7 +86,7 @@ public final class ChatMagic {
         sender.sendMessage(colorize(template, args));
     }
     
-    public static void send(Conversable c, String template, Object ... args) {
+    public static void sendRaw(Conversable c, String template, Object ... args) {
         c.sendRawMessage(colorize(template, args));
     }
 
