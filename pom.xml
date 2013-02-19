@@ -4,7 +4,7 @@
   <groupId>us.crast</groupId>
   <artifactId>MondoCommand</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.1</version>
   <name>MondoCommand</name>
   <url>https://github.com/crast/MondoCommand</url>
 

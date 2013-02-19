@@ -78,6 +78,20 @@ The output of running sub-sub commands looks lke this:
 
 ![Usage example 3](http://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage3.png)
 
+
+Customizing formatting
+----------------------
+
+If you don't like the default formatting of MondoCommand, the formatting can be customized:
+```java
+FormatConfig fmt = new FormatConfig()
+    .setUsageHeading("{GOLD}Usage: ")
+    .setReplyPrefix("{RED}My{GREEN}App: ")
+    .setPermissionWarning("{RED}You do not have any permissions to perform this action.");
+
+MondoCommand base = new MondoCommand(fmt);
+```
+
 Using with Maven
 ----------------
 
@@ -94,14 +108,13 @@ And this dependency:
     <dependency>
       <groupId>us.crast</groupId>
       <artifactId>MondoCommand</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1.1</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
 ```
 
 And also remember to shade the package so that there's no conflicts with other plugins
-
 ```xml
 <relocation>
   <pattern>mondocommand</pattern>
