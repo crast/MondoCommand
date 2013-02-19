@@ -2,6 +2,7 @@ package mondocommand;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class CallInfo {
      * @param baseCommand The label of the base command being executed (for reference)
      * @param subCommand The SubCommand we're executing.
      * @param args The command arguments.
-     * @param format 
+     * @param formatter The formatter being used by our MondoCommand.
      */
     public CallInfo(CommandSender sender, Player player, String baseCommand, SubCommand subCommand, List<String> args, FormatConfig formatter) {
         Validate.notNull(sender);
@@ -73,6 +74,27 @@ public class CallInfo {
     public List<String> getArgs() {
         return this.args;
     }
+    
+    /**
+     * Get an argument coerced into an int. 
+     * @param index the location in the arguments array.
+     * @return The argumnt
+     */
+    public int getIntArg(int index) {
+        return Integer.parseInt(getArg(index));
+    }
+    
+    /**
+     * Get all the arguments after the specified index joined into a single string.
+     * 
+     * This is useful if one of your last arguments is a free-form text entry 
+     * (like for a chat message, or editing a sign/book text)
+     * @param index The index to start at (inclusive)
+     * @return A single string containing all the arguments til the end
+     */
+    public String getJoinedArgsAfter(int index) {
+        return StringUtils.join(args.subList(index, args.size()), " ");
+    }
 
     /**
      * How many arguments we got.
@@ -100,8 +122,9 @@ public class CallInfo {
 
     /**
      * Respond to the call, interpolating colors and variables.
-     * @param template A string template. see @class ColorMagic documentation.
+     * @param template A string template. See ColorMagic documentation for more info.
      * @param args Zero or more arguments to interpolate the template
+     * @see ChatMagic#colorize
      */
     public void reply(String template, Object ... args) {
         if (replyPrefix.length() == 0) {
