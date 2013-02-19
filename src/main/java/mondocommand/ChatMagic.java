@@ -51,6 +51,18 @@ public final class ChatMagic {
         colorMap.put(alias, color.toString());
         translationMap.clear();
     }
+
+    /**
+     * Register an alias for a color, but only if it doesn't already exist.
+     * @param alias The alias string to use. Must include brackets.
+     * @param color A ChatColor.
+     */
+    public static void registerDefaultAlias(String alias, ChatColor color) {
+        if (!colorMap.containsKey(alias)) {
+            registerAlias(alias, color);
+        }
+    }
+
     
     /**
      * Colorize this string with Bukkit ChatColors and interpolate any variables.
@@ -89,5 +101,4 @@ public final class ChatMagic {
     public static void sendRaw(Conversable c, String template, Object ... args) {
         c.sendRawMessage(colorize(template, args));
     }
-
 }
