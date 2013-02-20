@@ -108,7 +108,7 @@ And this dependency:
     <dependency>
       <groupId>us.crast</groupId>
       <artifactId>MondoCommand</artifactId>
-      <version>0.1.1</version>
+      <version>0.2</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
