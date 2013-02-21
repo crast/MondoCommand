@@ -127,10 +127,14 @@ public class CallInfo {
      * @see ChatMagic#colorize
      */
     public void reply(String template, Object ... args) {
-        if (replyPrefix.length() == 0) {
-            ChatMagic.send(sender, template, args);
-        } else {
+        reply(true, template, args);
+    }
+        
+    public void reply(boolean prefix, String template, Object ... args) {
+        if (prefix) {
             ChatMagic.send(sender, replyPrefix + template, args);
+        } else {
+            ChatMagic.send(sender, template, args);
         }
     }
 

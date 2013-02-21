@@ -57,6 +57,10 @@ This creates an output which looks like this:
 
 ![Usage example](https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png)
 
+
+Nested Sub-Commands
+-------------------
+
 MondoCommand now also supports doing sub-sub commands by nesting one MondoCommand as a sub of the base (and in theory can handle as many levels as you want)
 
 ```java
