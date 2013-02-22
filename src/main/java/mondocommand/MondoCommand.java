@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import mondocommand.dynamic.SubCommandFinder;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -143,6 +145,10 @@ public class MondoCommand implements CommandExecutor, SubHandler {
             }
         }
         return items;
+    }
+
+    public void autoRegisterFrom(Object handler) {
+        new SubCommandFinder(this).registerMethods(handler);
     }
 }
 
