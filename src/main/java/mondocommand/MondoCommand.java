@@ -150,6 +150,10 @@ public class MondoCommand implements CommandExecutor, SubHandler {
     public void autoRegisterFrom(Object handler) {
         new SubCommandFinder(this).registerMethods(handler);
     }
+    
+    public List<SubCommand> listCommands() {
+        return new ArrayList<SubCommand>(subcommands.values());
+    }
 }
 
 final class FallbackHandler implements SubHandler {
