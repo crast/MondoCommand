@@ -153,7 +153,7 @@ And this dependency:
     <dependency>
       <groupId>us.crast</groupId>
       <artifactId>MondoCommand</artifactId>
-      <version>0.2</version>
+      <version>0.3</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
