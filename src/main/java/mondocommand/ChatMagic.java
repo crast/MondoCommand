@@ -1,6 +1,7 @@
 package mondocommand;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
@@ -29,6 +30,7 @@ import org.bukkit.conversations.Conversable;
  * @see String#format
  */
 public final class ChatMagic {
+    private static final int SIZE_THRESHOLD = 5000;
     private static HashMap<String, String> colorMap = new HashMap<String, String>();
     private static HashMap<String, String> translationMap = new HashMap<String, String>();
     static {
@@ -78,6 +80,9 @@ public final class ChatMagic {
                 translated = translated.replace(e.getKey(), e.getValue());
             }
             translationMap.put(template, translated);
+            if (translationMap.size() > SIZE_THRESHOLD) {
+                cleanup();
+            }
         }
         if (args.length > 0) {
             return String.format(translated, args);
@@ -87,6 +92,16 @@ public final class ChatMagic {
         
     }
     
+    private static void cleanup() {
+        Iterator<String> it = translationMap.values().iterator();
+        int to_remove = translationMap.size() / 5;
+        while (--to_remove >= 0) {
+            if (!it.hasNext()) break;
+            it.next();
+            it.remove();
+        }
+    }
+
     /**
      * A convenience for sending messages to a player colorized. 
      * @param sender A CommandSender or player.
