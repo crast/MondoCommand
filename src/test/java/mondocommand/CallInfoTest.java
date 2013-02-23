@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author james
+ * @author James Crasta
  *
  */
 public class CallInfoTest {
@@ -98,10 +98,10 @@ public class CallInfoTest {
      * Test method for {@link mondocommand.CallInfo#replySimple(java.lang.String)}.
      */
     @Test
-    public void testReplySimple() {
-        call.replySimple("foo bar");
+    public void testReplyNoPrefix() {
+        call.reply(false, "foo {green}%d", 45);
         assertEquals(1, player.messages.size());
-        assertEquals(expectedHeader + "foo bar", player.messages.get(0));
+        assertEquals("foo " + ChatColor.GREEN.toString() + "45", player.messages.get(0));
     }
 
 }

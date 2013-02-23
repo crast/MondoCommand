@@ -22,7 +22,7 @@ public class CallInfo {
     private List<String> args;
 
     /**
-     * Create a new CallInfo representing one command invocaion.
+     * Create a new CallInfo representing one command invocation.
      * @param sender The CommandSender who invoked this (can be a console)
      * @param player The Player who invoked this (will be null if a console)
      * @param baseCommand The label of the base command being executed (for reference)
@@ -90,7 +90,7 @@ public class CallInfo {
      * This is useful if one of your last arguments is a free-form text entry 
      * (like for a chat message, or editing a sign/book text)
      * @param index The index to start at (inclusive)
-     * @return A single string containing all the arguments til the end
+     * @return A single string containing all the arguments till the end
      */
     public String getJoinedArgsAfter(int index) {
         return StringUtils.join(args.subList(index, args.size()), " ");
@@ -122,27 +122,25 @@ public class CallInfo {
 
     /**
      * Respond to the call, interpolating colors and variables.
-     * @param template A string template. See ColorMagic documentation for more info.
-     * @param args Zero or more arguments to interpolate the template
+     * @param template A string template. See {@link ChatMagic} documentation for more info.
+     * @param args Zero or more arguments to interpolate the template.
      * @see ChatMagic#colorize
      */
     public void reply(String template, Object ... args) {
         reply(true, template, args);
     }
-        
+
+    /**
+     * Re
+     * @param prefix if True, prefix the message with the formater's prefix.
+     * @param template A string template. See {@link ChatMagic} documentation for more info.
+     * @param args Zero or more arguments to interpolate the template.
+     */
     public void reply(boolean prefix, String template, Object ... args) {
         if (prefix) {
             ChatMagic.send(sender, replyPrefix + template, args);
         } else {
             ChatMagic.send(sender, template, args);
         }
-    }
-
-    /**
-     * Reply to the sender with no formatting
-     * @param message a simple string.
-     */
-    public void replySimple(String message) {
-        sender.sendMessage(replyPrefix + message);
     }
 }
