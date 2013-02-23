@@ -9,53 +9,94 @@ It also abstracts out a lot of the annoying things about doing subcommands, like
 Basic usage
 -----------
 
+Do this in your onEnable or something similar:
+
 ```java
 // Basic setup and registration
 MondoCommand base = new MondoCommand();
+base.autoRegisterFrom(this);
 getCommand("housebuilder").setExecutor(base);
+```
 
+Now you can add some handlers:
 
-// Add sub-command build which requires permission "housebuilder.build"
-base.addSub("build", "housebuilder.build")
-	.setDescription("Build a House")       // Description is shown in command help
-	.setMinArgs(2)                         // Won't run your command without this many args
-	.setUsage("<name> <owner>")            // Sets argument usage information
-	.setHandler(new HouseBuildHandler());
+```java
+@Sub(description="Build a House", minArgs=2, usage="<owner> <name>")
+public void build(CallInfo call) {
+    String owner = call.getArg(0);
+    String name = call.getArg(1);
+    if (houseMap.containsKey(name)) {
+        call.reply("House with name %s already exists", name);
+    } else {
+        // TODO add code to actually make a house
+        call.reply("House %s made!", name);
+    }
+}
 
-
-// Add a sub-command destroy which requires permissions "housebuilder.destroy"
-base.addSub("destroy", "housebuilder.destroy")
-	.setDescription("Destroy a House")
-	.setMinArgs(1)
-	.setUsage("<name>")
-	.setHandler(new SubHandler() {
-		// This is an example of how to do handlers in-line.
-		public void handle(CallInfo call) {
-			String houseName = call.getArg(0);
-			if (houseMap.containsKey(houseName)) {
-				houseMap.remove(houseName);
-				// MondoCommand allows you to add messages with color formatting
-				call.reply("{GREEN}House {GOLD}%s{GREEN} removed", houseName);
-			} else {
-				call.reply("{RED}House %s not found", houseName);
-			}
-		}
-	});
-
-// Example of a command which works on the console
-base.addSub("version")
-	.allowConsole()
-	.setDescription("Get HouseBuilder version")
-	.setHandler(new SubHandler() {
-		public void handle(CallInfo call) {
-			call.reply("HouseBuilder Version {RED}1.0.5");
-		}
-	});
+@Sub(description="Destroy a House", permission="housebuilder.destroy",
+     minArgs=1, usage="<name>", allowConsole=false)
+public void destroy(CallInfo Call) {
+    // We don't need to check number of args, becaus we registered the
+    // command with minArgs = 1.
+    String name = call.getArg(0);
+    if (houseMap.containsKey(name)) {
+        houseMap.remove(name);
+        call.reply("{GREEN}House {GOLD}%s{GREEN} removed", name);
+    } else {
+        call.reply("{RED}House %s not found", name);
+    }
+});
 ```
 
 This creates an output which looks like this:
 
 ![Usage example](https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png)
+
+
+But I want more control!
+------------------------
+
+If you want more control over MondoCommand, or you hate dynamic registration via reflection, worry not, you can add all your commands explicitly with the core API for subcommand adding:
+
+```java
+// Add sub-command build which requires permission "housebuilder.build"
+base.addSub("build", "housebuilder.build")
+    .setDescription("Build a House")       // Description is shown in command help
+    .setMinArgs(2)                         // Won't run your command without this many args
+    .setUsage("<name> <owner>")            // Sets argument usage information
+    .setHandler(new HouseBuildHandler());
+
+
+// Add a sub-command destroy which requires permissions "housebuilder.destroy"
+base.addSub("destroy", "housebuilder.destroy")
+    .setDescription("Destroy a House")
+    .setMinArgs(1)
+    .setUsage("<name>")
+    .setHandler(new SubHandler() {
+        // This is an example of how to do handlers in-line.
+        public void handle(CallInfo call) {
+            String houseName = call.getArg(0);
+            if (houseMap.containsKey(houseName)) {
+                houseMap.remove(houseName);
+                // MondoCommand allows you to add messages with color formatting
+                call.reply("{GREEN}House {GOLD}%s{GREEN} removed", houseName);
+            } else {
+                call.reply("{RED}House %s not found", houseName);
+            }
+        }
+    });
+
+// Example of a command which works on the console
+base.addSub("version")
+    .allowConsole()
+    .setDescription("Get HouseBuilder version")
+    .setHandler(new SubHandler() {
+        public void handle(CallInfo call) {
+            call.reply("HouseBuilder Version {RED}1.0.5");
+        }
+    });
+```
+
 
 
 Nested Sub-Commands
