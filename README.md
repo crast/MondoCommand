@@ -53,6 +53,35 @@ This creates an output which looks like this:
 ![Usage example](https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png)
 
 
+### Things you can do with CallInfo
+
+All MondoCommand handlers take a single argument of type CallInfo which contains all the information you'd normally get from a command handler, plus a bunch of added bits to make writing commands much more convenient:
+
+* `call.getPlayer()` gets a Player object (no more casting from CommandSender) and commands can be registered as allowing console or player-only.
+* `call.reply(template, [...])` This is the gem of MondoCommand, it will send a message back to the user that interprets color codes embedded in the string, and lets you also interpolate variables into the string without having to do string concatenation. See below for how to use call.reply.
+* `call.getArg(index)` To get a single argument, where the 0th index is the first index which comes after the sub command name (no more argument math!) and furthermore, you don't need to check the length of the args if you registered the subcommand with [B]setMinArgs()[/B], it will show the player a usage message and stop them from running your command.
+* `call.getIntArg(index)` - Convenient way to get an argument coerced into an integer.
+* `call.getJoinedArgsAfter(index)` - If you need to get a bunch of arguments after a certain index (like say you're accepting a text entry or chat message) this convenience method does that for you.
+* `call.numArgs()` - Get the number of arguments.
+
+### Using call.reply()
+
+Ever write something like:
+```java
+player.sendMessage(ChatColor.BLUE.toString() + "Added user "
+                   + ChatColor.RED.toString() + targetPlayer.getName()
+                   + ChatColor.BLUE.toString() + "with role"
+                   + ChatColor.GREEN.toString() + role);
+```
+
+Well with MondoCommand, that looks like:
+```java
+call.reply("{BLUE}Added user {RED}%s {BLUE}with role {GREEN}%s",
+           targetPlayer.getName(), role);
+```
+You can put any of the Bukkit color codes in braces and also take advantage of string formatting as provided by *String.format* to let you smartly interpolate variables.
+
+
 But I want more control!
 ------------------------
 
@@ -96,7 +125,6 @@ base.addSub("version")
         }
     });
 ```
-
 
 
 Nested Sub-Commands
