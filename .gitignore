@@ -15,3 +15,6 @@ target/
 .classpath
 makejar.sh
 .settings
+
+# Sphinx stuff
+docs/_build
