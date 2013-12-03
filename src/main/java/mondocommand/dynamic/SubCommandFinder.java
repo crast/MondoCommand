@@ -21,7 +21,6 @@ public class SubCommandFinder {
     }
 
     public void registerMethods(Object handler) {
-        
         for (Method method : sortedMethods(handler)) {
             Sub subInfo = method.getAnnotation(Sub.class);
             if (subInfo == null) continue;
@@ -36,7 +35,7 @@ public class SubCommandFinder {
             registerMethod(handler, method, subInfo);
         }
     }
-        
+
     private void registerMethod(Object handler, Method method, Sub subInfo) {
         String name = subInfo.name();
         if (name.equals("")) {
@@ -50,15 +49,14 @@ public class SubCommandFinder {
             .setMinArgs(subInfo.minArgs())
             .setDescription(subInfo.description())
             .setUsage(subInfo.usage());
-        
+
         if (subInfo.allowConsole()) {
             sub = sub.allowConsole();
         }
-        sub.setHandler(buildHandler(handler, method));            
-
+        sub.setHandler(buildHandler(handler, method));
     }
-    
-    private SubHandler buildHandler(final Object handler, final Method method) {
+
+    private static SubHandler buildHandler(final Object handler, final Method method) {
         return new SubHandler() {
             @Override
             public void handle(CallInfo call) throws MondoFailure {
@@ -74,7 +72,7 @@ public class SubCommandFinder {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            }       
+            }
         };
     }
 
