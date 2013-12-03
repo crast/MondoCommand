@@ -36,7 +36,7 @@ public void build(CallInfo call) {
 @Sub(description="Destroy a House", permission="housebuilder.destroy",
      minArgs=1, usage="<name>", allowConsole=false)
 public void destroy(CallInfo Call) {
-    // We don't need to check number of args, becaus we registered the
+    // We don't need to check number of args, because we registered the
     // command with minArgs = 1.
     String name = call.getArg(0);
     if (houseMap.containsKey(name)) {
@@ -45,7 +45,7 @@ public void destroy(CallInfo Call) {
     } else {
         call.reply("{RED}House %s not found", name);
     }
-});
+}
 ```
 
 This creates an output which looks like this:
