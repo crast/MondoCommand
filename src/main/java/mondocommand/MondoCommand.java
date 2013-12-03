@@ -25,14 +25,14 @@ public class MondoCommand implements CommandExecutor, SubHandler {
 
     private final Map<String, SubCommand> subcommands = new LinkedHashMap<String, SubCommand>();
     private final FormatConfig formatter;
-    
+
     /**
      * Create a new MondoCommand with the base formatting specification.
      */
     public MondoCommand() {
         this(BASE_FORMAT);
     }
-    
+
     /**
      * Create a new MondoCommand, used for dynamic sub command handling.
      * @param formatter Configuration on how to format responses.
@@ -55,7 +55,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
         handleRawCommand(sender, player, commandLabel, callArgs);
         return false;
     }
-    
+
 
     /** Implement the SubHandler interface so we can do sub-sub commands and such. */
     @Override
@@ -63,7 +63,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
         String commandLabel = call.getBaseCommand() + " " + call.getSubCommand().getName();
         handleRawCommand(call.getSender(), call.getPlayer(), commandLabel, call.getArgs());
     }
-    
+
     /**
      * Handle a command, dispatching to the appropriate listeners.
      * @param sender A CommandSender who is the person or console who sent this command.
@@ -85,7 +85,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
             ChatMagic.send(sender, formatter.getPermissionWarning());
             return;
         } else if ((args.size() - 1) < sub.getMinArgs()) {
-            String usageFormat = formatter.getUsageHeading() + "{GREEN}%s %s {USAGE}%s";
+            String usageFormat = formatter.getUsageHeading() + "{MCMD}%s %s {USAGE}%s";
             ChatMagic.send(sender, usageFormat, commandLabel, sub.getName(), sub.getUsage());
             return;
         }
@@ -107,14 +107,14 @@ public class MondoCommand implements CommandExecutor, SubHandler {
      * @param slash An empty string if there should be a slash prefix, a slash otherwise.
      */
     private void showUsage(CommandSender sender, Player player, String commandLabel) {
-        String headerFormat = formatter.getUsageHeading() + "%s <command> [<args>]";
+        String headerFormat = formatter.getUsageHeading() + "%s" + formatter.getUsageCommandSuffix();
         ChatMagic.send(sender, headerFormat, commandLabel);
 
         for (SubCommand sub: availableCommands(sender, player)) {
             formatter.writeUsageLine(sender, commandLabel, sub);
         }
     }
-    
+
     /**
      * Add a sub-command to this MondoCommand.
      * @param name The name of this sub-command.
@@ -126,7 +126,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
         subcommands.put(name.toLowerCase(), cmd);
         return cmd;
     }
-    
+
     /**
      * Add a sub-command to this MondoCommand.
      * @param name the name of this sub-command.
@@ -135,7 +135,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
     public SubCommand addSub(String name) {
         return addSub(name, null);
     }
-    
+
     private List<SubCommand> availableCommands(CommandSender sender, Player player) {
         ArrayList<SubCommand> items = new ArrayList<SubCommand>();
         boolean has_player = (player != null);
@@ -150,7 +150,7 @@ public class MondoCommand implements CommandExecutor, SubHandler {
     public void autoRegisterFrom(Object handler) {
         new SubCommandFinder(this).registerMethods(handler);
     }
-    
+
     public List<SubCommand> listCommands() {
         return new ArrayList<SubCommand>(subcommands.values());
     }

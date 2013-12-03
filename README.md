@@ -163,6 +163,7 @@ In addition, many of the usage strings can be customized using the FormatConfig 
 ```java
 FormatConfig fmt = new FormatConfig()
     .setUsageHeading("{GOLD}Usage: ")
+    .setUsageCommandSuffix(" {GREEN}<command> [arg...]")
     .setReplyPrefix("{RED}My{GREEN}App: ")
     .setPermissionWarning("{RED}You do not have any permissions to perform this action.");
 
