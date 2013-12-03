@@ -1,8 +1,7 @@
 package mondocommand;
 
-
+import org.bukkit.ChatColor;
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 public class MondoCommandTest {
@@ -26,7 +25,7 @@ public class MondoCommandTest {
     public void testInitialize() {
         assertEquals("foo", cmd.addSub("foo").getName());
     }
-    
+
     @Test
     public void testCommandHelp() {
         cmd.onCommand(sender, null, "foo", EMPTY_ARGS);
@@ -34,14 +33,14 @@ public class MondoCommandTest {
         assertEquals("Usage: foo <command> [<args>]", sender.stripMessage(0));
         assertEquals("foo default desc", sender.stripMessage(1));
     }
-    
+
     @Test
     public void testCommandHelpPermissioned() {
         sender.permissions.add("fooplugin.perm");
         cmd.onCommand(sender, null, "foo", EMPTY_ARGS);
         assertEquals(3, sender.messages.size());
     }
-    
+
     @Test
     public void testCommandHelpPlayerOnly() {
         MockPlayer player = new MockPlayer();
@@ -56,7 +55,7 @@ public class MondoCommandTest {
         assertEquals(7, player.messages.size());
         assertEquals("/foo permissioned permissioned!", player.stripMessage(5));
     }
-    
+
     @Test
     public void testCommandDefault() {
         String[] args = new String[] {"default", "misc"};
@@ -64,7 +63,7 @@ public class MondoCommandTest {
         assertEquals(1, sender.messages.size());
         assertEquals("This SubHandler does not have an appropriate handler registered.", sender.stripMessage(0));
     }
-    
+
     @Test
     public void testWithFormatter() {
         FormatConfig fmt = new FormatConfig()
@@ -82,5 +81,24 @@ public class MondoCommandTest {
         c.onCommand(sender, null, "b", new String[] {"default"});
         assertEquals(4, sender.messages.size());
         assertEquals("Hi! This SubHandler does not have an appropriate handler registered.", sender.stripMessage(3));
+    }
+
+    @Test
+    public void testMondoFailure() {
+        MondoCommand c = new MondoCommand();
+        c.addSub("foo").setHandler(new SubHandler() {
+            public void handle(CallInfo call) throws MondoFailure {
+                throw new MondoFailure(
+                    "Could not find {GREEN}%s{RED} thing",
+                    call.getArg(0)
+                );
+            }
+        });
+        c.onCommand(sender, null, "foo", new String[] {"foo", "bob"});
+        assertEquals(1, sender.messages.size());
+        assertEquals(sender.messages.get(0),
+            ChatColor.RED.toString() + "Could not find " +
+            ChatColor.GREEN.toString() + "bob" +
+            ChatColor.RED.toString() + " thing");
     }
 }

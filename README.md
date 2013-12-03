@@ -171,6 +171,69 @@ MondoCommand base = new MondoCommand(fmt);
 ```
 
 
+Better Error Handling
+---------------------
+
+One thing MondoCommand is able to do is provide a better error handling flow and also encourage re-usable components by using exceptions to handle the flow and provide descriptive errors back to the users. This is done by use of the `MondoFailure` exception.
+
+To illustrate how this can change your code flow, let's begin first with some basic code which manipulates houses in our theoretical HouseBuilder plugin:
+```java
+@Sub(description="Destroy a House", minArgs=1, usage="<name>")
+public void destroy(CallInfo Call) {
+    String name = call.getArg(0);
+    if (houseMap.containsKey(name)) {
+        houseMap.get(name).destroy();
+        houseMap.remove(name);
+        call.reply("{GREEN}House {GOLD}%s{GREEN} removed", name);
+    } else {
+        call.reply("{RED}House %s not found", name);
+    }
+};
+
+@Sub(description="Expand House", minArgs=2, usage="<name> <size>")
+public void grow(CallInfo Call) {
+    String name = call.getArg(0);
+    if (houseMap.containsKey(name)) {
+        houseMap.get(name).expand(call.getIntArg(1));
+        call.reply("{GREEN}House {GOLD}%s{GREEN} expanded", name);
+    } else {
+        call.reply("{RED}House %s not found", name);
+    }
+```
+
+You'll notice above that you've more or less duplicated the pieces which deal with finding a house by name in both of those methods, and while you could define a helper, it makes the control flow with providing a clean message to the user much harder. There is another way you can do it, using the `MondoFailure` exception. All handlers for MondoCommand are allowed to throw a MondoFailure exception. The intention of this is to allow you to propagate sensible messages outwards.
+
+```java
+private House getHouse(String name) throws MondoFailure {
+    House house = houseMap.get(name.toLowerCase());
+    if (house == null) {
+        throw new MondoFailure("House {NOUN}%s{ERROR} not found", name);
+    }
+    return house;
+}
+
+@Sub(description="Destroy a House", minArgs=1, usage="<name>")
+public void destroy(CallInfo Call) throws MondoFailure {
+    String name = call.getArg(0);
+    // MondoFailure is propagated so we don't need to deal with not found situation
+    House house = getHouse(name);
+    house.destroy();
+    houseMap.remove(name);
+    call.reply("{GREEN}House {NOUN}%s{GREEN} removed", name);
+};
+
+@Sub(description="Expand House", minArgs=2, usage="<name> <size>")
+public void grow(CallInfo Call) throws MondoFailure {
+    String name = call.getArg(0);
+    House house = getHouse(name);
+    house.expand(call.getIntArg(1));
+    call.reply("{GREEN}House {NOUN}%s{GREEN} expanded", name);
+}
+```
+
+By using MondoFailure and allowing it to propagate through handlers, now your code is considerably flattened versus the original way it was designed, allowing you to have cleaner command handlers and less duplicated code.
+
+
 Using with Maven
 ----------------
 
