@@ -129,6 +129,9 @@ Customizing formatting
 
 If you don't like the default formatting of MondoCommand, the formatting can be customized in various ways.
 
+Color Roles
+~~~~~~~~~~~
+
 Internally, MondoCommand uses color "roles" to represent various colors. This allows you to write code that, for example, has colors changeable by your users. Also, it lets you customize some of the other strings you can't normally get at.
 
 Here are the roles which MondoCommand uses:
@@ -153,6 +156,19 @@ You can also use any of these roles in your own code:
 String action_text = "expand";
 call.reply("About to {VERB}%s{RESET} the house belonging to {NOUN}%s",
            action_text, playerName);
+```
+
+FormatConfig
+~~~~~~~~~~~~
+
+In addition, many of the usage strings can be customized using the FormatConfig class:
+```java
+FormatConfig fmt = new FormatConfig()
+    .setUsageHeading("{GOLD}Usage: ")
+    .setReplyPrefix("{RED}My{GREEN}App: ")
+    .setPermissionWarning("{RED}You do not have any permissions to perform this action.");
+
+MondoCommand base = new MondoCommand(fmt);
 ```
 
 
