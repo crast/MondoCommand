@@ -127,15 +127,34 @@ The output of running sub-sub commands looks lke this:
 Customizing formatting
 ----------------------
 
-If you don't like the default formatting of MondoCommand, the formatting can be customized:
-```java
-FormatConfig fmt = new FormatConfig()
-    .setUsageHeading("{GOLD}Usage: ")
-    .setReplyPrefix("{RED}My{GREEN}App: ")
-    .setPermissionWarning("{RED}You do not have any permissions to perform this action.");
+If you don't like the default formatting of MondoCommand, the formatting can be customized in various ways.
 
-MondoCommand base = new MondoCommand(fmt);
+Internally, MondoCommand uses color "roles" to represent various colors. This allows you to write code that, for example, has colors changeable by your users. Also, it lets you customize some of the other strings you can't normally get at.
+
+Here are the roles which MondoCommand uses:
+
+ * `{HEADER}` Heading of any multi-line replies
+ * `{USAGE}` The usage portion of command help (usually describes arguments). Default: LIGHT_PURPLE
+ * `{WARNING}` Used when permissions do not match. Default: DARK_RED
+ * `{ERROR}` Used when there's an error in the form of a MondoFailure
+ * `{NOUN}` Used to describe an object. (currently unused by MondoCommand) Default: AQUA
+ * `{VERB}` Used to describe an action. Default: GRAY
+ * `{MCMD}` Used for the command portion of the usage line. Default: GREEN
+ * `{DESCRIPTION}` The description of the line in the usage line. Default: BLUE
+
+So one way to change how MondoCommand looks is by changing the role aliases:
+```java
+    ChatMagic.registerAlias("{HEADER}", ChatColor.GOLD);
+    ChatMagic.registerAlias("{USAGE}", ChatColor.LIGHT_PURPLE);
 ```
+
+You can also use any of these roles in your own code:
+```java
+String action_text = "expand";
+call.reply("About to {VERB}%s{RESET} the house belonging to {NOUN}%s",
+           action_text, playerName);
+```
+
 
 Using with Maven
 ----------------
