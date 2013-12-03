@@ -159,7 +159,7 @@ If you don't like the default formatting of MondoCommand, the formatting can be 
 
 ### Color Roles
 
-Internally, MondoCommand uses color "roles" to represent various colors. This allows you to write code that, for example, has colors changeable by your users. Also, it lets you customize some of the other strings you can't normally get at.
+Internally, MondoCommand uses color "roles" to represent various colors. This allows you to write code that, for example, has colors changeable by your users. Also, it lets you customize the colors of output from MondoCommand.
 
 Here are the roles which MondoCommand uses:
 
