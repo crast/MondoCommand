@@ -3,22 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to MondoCommand's documentation!
-========================================
-
-Contents:
+MondoCommand
+============
 
 .. toctree::
    :maxdepth: 2
 
    getting_started
    maven
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   customizing
+   subcommands
