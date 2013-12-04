@@ -6,12 +6,20 @@ You've probably tried it, and very soon entire function blocks start to look lik
 [LIST]
 [*]Lets you register many sub-commands and let you separate the code how you like (multiple methods, classes, whatever) with minimal headache.
 [*]Enforces permissions on individual sub-commands
-[*]Generates a [url=https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png]colorful help screen [/url] automatically:
+[*]Generates a [url=https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png]colorful help screen [/url] automatically
 [*]Handles gracefully player-only commands vs commands for consoles
 [*]Lets you do pretty formatted color output without having to bang your head against the ChatColor class.[/LIST]
 
+[b]Resources[/b][LIST]
+[*][url=http://mondocommand.readthedocs.org/en/latest/][b]NEW[/b] user manual[/url]
+[*][url=https://github.com/crast/MondoCommand#using-with-maven]How to setup with Maven[/url]
+[*][url=http://crast.us/MondoCommand/apidocs/]JavaDocs[/url]
+[*][url=https://github.com/crast/MondoCommand/tree/master/example-plugin/]Example Plugin Source[/url]
+[/LIST]
+
 
 <h2>Brief Intro Tutorial</h2>
+[b]Note[/b] There is now an [url=http://mondocommand.readthedocs.org/en/latest/getting_started.html]even better tutorial[/url] as part of the [url=http://mondocommand.readthedocs.org/en/latest/]official documentation[/url]
 
 <script>
 // Basic setup and registration
@@ -52,7 +60,7 @@ public void destroy(CallInfo Call) {
     } else {
         call.reply("{RED}House %s not found", name);
     }
-});
+}
 </script>
 This shows off a few more of MondoCommand's features, like the ability to control whether individual commands can be used at the console or not, and to gate individual sub-commands with permissions. Also, automatic color interpolation, which we'll explain more soon.
 
@@ -86,82 +94,4 @@ You can put any of the Bukkit color codes in braces and also take advantage of s
 
 If you don't want to use dynamic command registration with [b]@[/b]Sub, don't worry, there's an API for you which uses no reflection and is completely predictable and type-safe. Actually, dynamic [b]@[/b]Sub registration is implemented by building a bunch of anonymous handler classes for the API, so it works out roughly the same.
 
-<script>
-// Add sub-command build with permission "housebuilder.build"
-base.addSub("build", "housebuilder.build")
-    .setDescription("Build a House") // shown in command help
-    .setMinArgs(2)    // Won't run your command without this many args
-    .setUsage("<name> <owner>")  // Sets argument usage information
-    .setHandler(new HouseBuildHandler());
-</script>
-
-This example references a theoretical HouseBuildHandler which we haven't created yet, but we will get into that soon.  The most important things to note is that:
-1) You build a sub-command by chaining, similar to some other API's like the conversations API.
-2) All sub-commands can be gated by an optional permission, if the user doesn't have this permission they can't access the subcommand nor will it show to them in help.
-3) You can set useful metadata like the description, usage arguments, and the minimum number of arguments accepted.
-4) Sub-commands delegate the action to a Handler which handles the actual implementation.
-
-Handlers can be anything which implement SubHandler, but if you don't want to create a new class for every handler you can also define them inline:
-<script>
-// Add sub-command destroy with permission "housebuilder.destroy"
-base.addSub("destroy", "housebuilder.destroy")
-    .allowConsole()  // Command is allowed to be run by the console user.
-    .setDescription("Destroy a House")
-    .setMinArgs(1)
-    .setUsage("<name>")
-    .setHandler(new SubHandler() {
-    // This is an example of how to do handlers in-line.
-    public void handle(CallInfo call) {
-        String houseName = call.getArg(0);
-        if (houseMap.containsKey(houseName)) {
-            houseMap.remove(houseName);
-            // MondoCommand allows you to add messages with color formatting
-            call.reply("{GREEN}House {GOLD}%s{GREEN} removed", houseName);
-        } else {
-            call.reply("{RED}House %s not found", houseName);
-        }
-    }
-});
-</script>
-
-
-An example using many of these features:
-<script>
-class SetRoomName implements SubHandler {
-    public void handle(CallInfo call) throws MondoFailure {
-        // If you register a player-only command, you have a player
-        // available to you, and don't need to cast from CommandSender.
-        Player player = call.getPlayer();
-        House house = House.find(call.getArg(0));
-
-        // Registering with setMinArgs(2) means you don't need to
-        // check if the arguments length is long enough.
-        String roomName = call.getJoinedArgsAfter(1);
-
-        if (validName(roomName)) {
-            house.setRoomName(roomName)
-            // String interpolation with color variables too
-            call.reply("{GREEN}Name set to {GOLD}%s", roomName);
-        } else {
-            call.reply("{RED}Name is invalid");
-        }
-    }
-}
-class House {
-    // Hypothetical method to find a house for a player
-    public static House find(Player player) throws MondoFailure {
-        if (player has no house) {
-            // Using MondoFailure is a way to have well-abstracted API's and
-            // yet still propagate useful information to the player executing
-            // the command.
-            throw new MondoFailure("Player does not have a house!");
-        }
-    }
-}</script>
-
-[b]Resources[/b][LIST]
-[*][url=https://github.com/crast/MondoCommand#basic-usage]More comprehensive code example[/url]
-[*][url=https://github.com/crast/MondoCommand#using-with-maven]How to setup with Maven[/url]
-[*][url=http://crast.us/MondoCommand/apidocs/]JavaDocs[/url]
-[*][url=https://github.com/crast/MondoCommand/tree/master/example-plugin/us/crast/MondoCommandExample]Example Plugin Source[/url]
-[/LIST]
+[b]This tutorial section has now [url=http://mondocommand.readthedocs.org/en/latest/subcommands.html#registering-subcommands]moved into the official documentation[/url][/b]
