@@ -1,0 +1,167 @@
+One of the most irking things about developing bukkit plugins is handling commands, especially when you want to do the more common approach these days of having a single outer command with multiple sub-actions nested inside it (and don't get me started on sub-sub-actions).
+
+You've probably tried it, and very soon entire function blocks start to look like a [url=https://gist.github.com/crast/5229624]huge if-elseif-else scenario[/url]. Well worry not, there's a new library in town, and it's going to make the headache about dealing with sub-commands go away.
+
+[b]MondoCommand:[/b]
+[LIST]
+[*]Lets you register many sub-commands and let you separate the code how you like (multiple methods, classes, whatever) with minimal headache.
+[*]Enforces permissions on individual sub-commands
+[*]Generates a [url=https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png]colorful help screen [/url] automatically:
+[*]Handles gracefully player-only commands vs commands for consoles
+[*]Lets you do pretty formatted color output without having to bang your head against the ChatColor class.[/LIST]
+
+
+<h2>Brief Intro Tutorial</h2>
+
+<script>
+// Basic setup and registration
+MondoCommand base = new MondoCommand();
+base.autoRegisterFrom(this);
+getCommand("housebuilder").setExecutor(base);
+</script>
+Yep, that's all there is to register the base command. MondoCommand is a CommandExecutor, nothing terribly fancy.
+
+Now you're going to write your first command:
+<script>
+@Sub(description="Build a House", minArgs=2, usage="<owner> <name>")
+public void build(CallInfo call) {
+    String owner = call.getArg(0);
+    String name = call.getArg(1);
+    if (houseMap.containsKey(name)) {
+        call.reply("House with name %s already exists", name);
+    } else {
+        // TODO add code to actually make a house
+        call.reply("House %s made!", name);
+    }
+}
+</script>
+
+Whoa whoa, what just happened there?  Well, MondoCommand lets you register commands automatically from any class's attributes by decorating methods with [b]@[/b]Sub. The method must take an argument of CallInfo (more on this later) and return void.
+
+Let's show another example command:
+<script>
+@Sub(permission="housebuilder.destroy", description="Destroy a House",
+     minArgs=1, usage="<name>", allowConsole=false)
+public void destroy(CallInfo Call) {
+    // We don't need to check number of args, becaus we registered the
+    // command with minArgs = 1.
+    String name = call.getArg(0);
+    if (houseMap.containsKey(name)) {
+        houseMap.remove(name);
+        call.reply("{GREEN}House {GOLD}%s{GREEN} removed", name);
+    } else {
+        call.reply("{RED}House %s not found", name);
+    }
+});
+</script>
+This shows off a few more of MondoCommand's features, like the ability to control whether individual commands can be used at the console or not, and to gate individual sub-commands with permissions. Also, automatic color interpolation, which we'll explain more soon.
+
+Besides handling the sub-command registration, you also get auto-generated help screens that look like this:
+[img]https://dl.dropbox.com/u/14941058/Screenshots/MondoCommand_Usage2.png[/img]
+
+On top of all that, MondoCommand wraps much of the ugliness of command handling into much easier convenience accessors:
+[LIST]
+[*]call.[b]getPlayer()[/b] gets a Player object (no more casting from CommandSender) and commands can be registered as allowing console or player-only.
+[*]call.[b]reply([/b]template, [...][b])[/b] - This is the gem of MondoCommand, it will send a message back to the user that interprets color codes embedded in the string, and lets you also interpolate variables into the string without having to do string concatenation. Ever write something like:
+<script>
+player.sendMessage(ChatColor.BLUE.toString() + "Added user "
+        + ChatColor.RED.toString() + targetPlayer.getName()
+        + ChatColor.BLUE.toString() + "with role"
+        + ChatColor.GREEN.toString() + role);
+</script>
+Well with MondoCommand, that looks like:
+<script>
+call.reply("{BLUE}Added user {RED}%s {BLUE}with role {GREEN}%s",
+           targetPlayer.getName(), role);
+</script>
+You can put any of the Bukkit color codes in braces and also take advantage of string formatting as provided by [b]String.format[/b] to let you smartly interpolate variables.
+[*]call.[b]getArg(index)[/b] - To get a single argument, where the 0th index is the first index which comes after the sub command name (no more argument math!) and furthermore, you don't need to check the length of the args if you registered the subcommand with [b]setMinArgs()[/b], it will show the player a usage message and stop them from running your command.
+[*]call.[b]getIntArg(index)[/b] - Convenient way to get an argument coerced into an integer.
+[*]call.[b]getJoinedArgsAfter(index)[/b] - If you need to get a bunch of arguments after a certain index (like say you're accepting a text entry or chat message) this convenience method does that for you.
+[*]call.[b]numArgs()[/b] - Show number of arguments.
+[/LIST]
+
+
+<h2>Do it with static registration (advanced mode)</h2>
+
+If you don't want to use dynamic command registration with [b]@[/b]Sub, don't worry, there's an API for you which uses no reflection and is completely predictable and type-safe. Actually, dynamic [b]@[/b]Sub registration is implemented by building a bunch of anonymous handler classes for the API, so it works out roughly the same.
+
+<script>
+// Add sub-command build with permission "housebuilder.build"
+base.addSub("build", "housebuilder.build")
+    .setDescription("Build a House") // shown in command help
+    .setMinArgs(2)    // Won't run your command without this many args
+    .setUsage("<name> <owner>")  // Sets argument usage information
+    .setHandler(new HouseBuildHandler());
+</script>
+
+This example references a theoretical HouseBuildHandler which we haven't created yet, but we will get into that soon.  The most important things to note is that:
+1) You build a sub-command by chaining, similar to some other API's like the conversations API.
+2) All sub-commands can be gated by an optional permission, if the user doesn't have this permission they can't access the subcommand nor will it show to them in help.
+3) You can set useful metadata like the description, usage arguments, and the minimum number of arguments accepted.
+4) Sub-commands delegate the action to a Handler which handles the actual implementation.
+
+Handlers can be anything which implement SubHandler, but if you don't want to create a new class for every handler you can also define them inline:
+<script>
+// Add sub-command destroy with permission "housebuilder.destroy"
+base.addSub("destroy", "housebuilder.destroy")
+    .allowConsole()  // Command is allowed to be run by the console user.
+    .setDescription("Destroy a House")
+    .setMinArgs(1)
+    .setUsage("<name>")
+    .setHandler(new SubHandler() {
+    // This is an example of how to do handlers in-line.
+    public void handle(CallInfo call) {
+        String houseName = call.getArg(0);
+        if (houseMap.containsKey(houseName)) {
+            houseMap.remove(houseName);
+            // MondoCommand allows you to add messages with color formatting
+            call.reply("{GREEN}House {GOLD}%s{GREEN} removed", houseName);
+        } else {
+            call.reply("{RED}House %s not found", houseName);
+        }
+    }
+});
+</script>
+
+
+An example using many of these features:
+<script>
+class SetRoomName implements SubHandler {
+    public void handle(CallInfo call) throws MondoFailure {
+        // If you register a player-only command, you have a player
+        // available to you, and don't need to cast from CommandSender.
+        Player player = call.getPlayer();
+        House house = House.find(call.getArg(0));
+
+        // Registering with setMinArgs(2) means you don't need to
+        // check if the arguments length is long enough.
+        String roomName = call.getJoinedArgsAfter(1);
+
+        if (validName(roomName)) {
+            house.setRoomName(roomName)
+            // String interpolation with color variables too
+            call.reply("{GREEN}Name set to {GOLD}%s", roomName);
+        } else {
+            call.reply("{RED}Name is invalid");
+        }
+    }
+}
+class House {
+    // Hypothetical method to find a house for a player
+    public static House find(Player player) throws MondoFailure {
+        if (player has no house) {
+            // Using MondoFailure is a way to have well-abstracted API's and
+            // yet still propagate useful information to the player executing
+            // the command.
+            throw new MondoFailure("Player does not have a house!");
+        }
+    }
+}</script>
+
+[b]Resources[/b][LIST]
+[*][url=https://github.com/crast/MondoCommand#basic-usage]More comprehensive code example[/url]
+[*][url=https://github.com/crast/MondoCommand#using-with-maven]How to setup with Maven[/url]
+[*][url=http://crast.us/MondoCommand/apidocs/]JavaDocs[/url]
+[*][url=https://github.com/crast/MondoCommand/tree/master/example-plugin/us/crast/MondoCommandExample]Example Plugin Source[/url]
+[/LIST]
