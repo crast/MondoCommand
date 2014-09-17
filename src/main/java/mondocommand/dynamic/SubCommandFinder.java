@@ -69,8 +69,11 @@ public class SubCommandFinder {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    if (e.getCause() instanceof MondoFailure) {
+                        throw (MondoFailure) e.getCause();
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
