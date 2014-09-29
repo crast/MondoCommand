@@ -14,9 +14,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SubCommandFinderTest {
+    private static final String NL = System.getProperty("line.separator");
     private static final String[] ERROR_LINES = new String[] {
         "MondoCommand: @Sub marked on  'broken1' from class mondocommand.dynamic.SubCommandFinderTest$FakeHandler, must receive only one argument of type CallInfo.",
-        "MondoCommand: @Sub marked on  'broken2' from class mondocommand.dynamic.SubCommandFinderTest$FakeHandler, must receive only one argument of type CallInfo.\n"
+        "MondoCommand: @Sub marked on  'broken2' from class mondocommand.dynamic.SubCommandFinderTest$FakeHandler, must receive only one argument of type CallInfo." + NL
      
     };
     private static final String[] sortedCommands = new String[]{ "bar", "baz1", "foo", "quux" };
@@ -26,7 +27,7 @@ public class SubCommandFinderTest {
         ByteArrayOutputStream fakeStream = new ByteArrayOutputStream();
         SubCommandFinder finder = new OverrideFinder(base, fakeStream);
         finder.registerMethods(new FakeHandler());
-        assertEquals(StringUtils.join(ERROR_LINES, "\n"), fakeStream.toString());
+        assertEquals(StringUtils.join(ERROR_LINES, NL), fakeStream.toString());
         List<SubCommand> commands = base.listCommands();
         
         assertEquals(4, commands.size());
