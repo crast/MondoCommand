@@ -8,16 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Achievement;
-import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
-import org.bukkit.GameMode;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Statistic;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -30,10 +21,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.InventoryView.Property;
 import org.bukkit.map.MapView;
 import org.bukkit.metadata.MetadataValue;
@@ -41,6 +29,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.bukkit.scoreboard.Scoreboard;
 
 public class MockPlayer extends MockCommandSender implements Player {
 
@@ -60,6 +49,11 @@ public class MockPlayer extends MockCommandSender implements Player {
 
     @Override
     public PlayerInventory getInventory() {
+        return null;
+    }
+
+    @Override
+    public Inventory getEnderChest() {
         return null;
     }
 
@@ -145,11 +139,21 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
-    public void damage(int arg0) {
+    public void damage(double arg0) {
     }
 
     @Override
-    public void damage(int arg0, Entity arg1) {
+    public void _INVALID_damage(int i) {
+
+    }
+
+    @Override
+    public void damage(double arg0, Entity arg1) {
+    }
+
+    @Override
+    public void _INVALID_damage(int i, Entity entity) {
+
     }
 
     @Override
@@ -173,8 +177,23 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
-    public int getHealth() {
+    public double getHealth() {
         return 0;
+    }
+
+    @Override
+    public int _INVALID_getHealth() {
+        return 0;
+    }
+
+    @Override
+    public double getHealthScale() {
+        return 0;
+    }
+
+    @Override
+    public boolean isHealthScaled() {
+        return false;
     }
 
     @Override
@@ -183,7 +202,12 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
-    public int getLastDamage() {
+    public double getLastDamage() {
+        return 0;
+    }
+
+    @Override
+    public int _INVALID_getLastDamage() {
         return 0;
     }
 
@@ -193,13 +217,43 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public List<Block> getLastTwoTargetBlocks(Set<Material> set, int i) {
+        return null;
+    }
+
+    @Override
     public List<Block> getLineOfSight(HashSet<Byte> arg0, int arg1) {
         return null;
     }
 
     @Override
-    public int getMaxHealth() {
+    public List<Block> getLineOfSight(Set<Material> set, int i) {
+        return null;
+    }
+
+    @Override
+    public double getMaxHealth() {
         return 0;
+    }
+
+    @Override
+    public int _INVALID_getMaxHealth() {
+        return 0;
+    }
+
+    @Override
+    public void setMaxHealth(double v) {
+
+    }
+
+    @Override
+    public void _INVALID_setMaxHealth(int i) {
+
+    }
+
+    @Override
+    public void resetMaxHealth() {
+
     }
 
     @Override
@@ -228,7 +282,52 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public Block getTargetBlock(Set<Material> set, int i) {
+        return null;
+    }
+
+    @Override
     public boolean hasLineOfSight(Entity arg0) {
+        return false;
+    }
+
+    @Override
+    public boolean getRemoveWhenFarAway() {
+        return false;
+    }
+
+    @Override
+    public void setRemoveWhenFarAway(boolean b) {
+
+    }
+
+    @Override
+    public EntityEquipment getEquipment() {
+        return null;
+    }
+
+    @Override
+    public void setCanPickupItems(boolean b) {
+
+    }
+
+    @Override
+    public boolean getCanPickupItems() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeashed() {
+        return false;
+    }
+
+    @Override
+    public Entity getLeashHolder() throws IllegalStateException {
+        return null;
+    }
+
+    @Override
+    public boolean setLeashHolder(Entity entity) {
         return false;
     }
 
@@ -243,15 +342,38 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public <T extends Projectile> T launchProjectile(Class<? extends T> aClass, Vector vector) {
+        return null;
+    }
+
+    @Override
     public void removePotionEffect(PotionEffectType arg0) {
     }
 
     @Override
-    public void setHealth(int arg0) {
+    public void setHealth(double arg0) {
     }
 
     @Override
-    public void setLastDamage(int arg0) {
+    public void _INVALID_setHealth(int i) {
+
+    }
+
+    @Override
+    public void setHealthScale(double arg0) {
+    }
+
+    @Override
+    public void setHealthScaled(boolean arg0) {
+    }
+
+    @Override
+    public void setLastDamage(double arg0) {
+    }
+
+    @Override
+    public void _INVALID_setLastDamage(int i) {
+
     }
 
     @Override
@@ -316,6 +438,11 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public Location getLocation(Location location) {
+        return null;
+    }
+
+    @Override
     public int getMaxFireTicks() {
         return 0;
     }
@@ -348,6 +475,26 @@ public class MockPlayer extends MockCommandSender implements Player {
     @Override
     public Entity getVehicle() {
         return null;
+    }
+
+    @Override
+    public void setCustomName(String s) {
+
+    }
+
+    @Override
+    public String getCustomName() {
+        return null;
+    }
+
+    @Override
+    public void setCustomNameVisible(boolean b) {
+
+    }
+
+    @Override
+    public boolean isCustomNameVisible() {
+        return false;
     }
 
     @Override
@@ -540,7 +687,22 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public void removeAchievement(Achievement achievement) {
+
+    }
+
+    @Override
+    public boolean hasAchievement(Achievement achievement) {
+        return false;
+    }
+
+    @Override
     public boolean canSee(Player arg0) {
+        return false;
+    }
+
+    @Override
+    public boolean isOnGround() {
         return false;
     }
 
@@ -623,6 +785,11 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public void giveExpLevels(int i) {
+
+    }
+
+    @Override
     public void hidePlayer(Player arg0) {
     }
 
@@ -631,7 +798,27 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public void decrementStatistic(Statistic statistic) throws IllegalArgumentException {
+
+    }
+
+    @Override
     public void incrementStatistic(Statistic arg0, int arg1) {
+    }
+
+    @Override
+    public void decrementStatistic(Statistic statistic, int i) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public void setStatistic(Statistic statistic, int i) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public int getStatistic(Statistic statistic) throws IllegalArgumentException {
+        return 0;
     }
 
     @Override
@@ -639,7 +826,57 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public void decrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public int getStatistic(Statistic statistic, Material material) throws IllegalArgumentException {
+        return 0;
+    }
+
+    @Override
     public void incrementStatistic(Statistic arg0, Material arg1, int arg2) {
+    }
+
+    @Override
+    public void decrementStatistic(Statistic statistic, Material material, int i) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public void setStatistic(Statistic statistic, Material material, int i) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public void incrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public void decrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public int getStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+        return 0;
+    }
+
+    @Override
+    public void incrementStatistic(Statistic statistic, EntityType entityType, int i) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public void decrementStatistic(Statistic statistic, EntityType entityType, int i) {
+
+    }
+
+    @Override
+    public void setStatistic(Statistic statistic, EntityType entityType, int i) {
+
     }
 
     @Override
@@ -697,7 +934,32 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public void playSound(Location location, Sound sound, float v, float v1) {
+
+    }
+
+    @Override
+    public void playSound(Location location, String s, float v, float v1) {
+
+    }
+
+    @Override
     public void resetPlayerTime() {
+    }
+
+    @Override
+    public void setPlayerWeather(WeatherType weatherType) {
+
+    }
+
+    @Override
+    public WeatherType getPlayerWeather() {
+        return null;
+    }
+
+    @Override
+    public void resetPlayerWeather() {
+
     }
 
     @Override
@@ -710,6 +972,11 @@ public class MockPlayer extends MockCommandSender implements Player {
 
     @Override
     public void sendBlockChange(Location arg0, int arg1, byte arg2) {
+    }
+
+    @Override
+    public void sendSignChange(Location location, String[] strings) throws IllegalArgumentException {
+
     }
 
     @Override
@@ -734,6 +1001,11 @@ public class MockPlayer extends MockCommandSender implements Player {
     }
 
     @Override
+    public void setBedSpawnLocation(Location location, boolean b) {
+
+    }
+
+    @Override
     public void setCompassTarget(Location arg0) {
     }
 
@@ -751,6 +1023,11 @@ public class MockPlayer extends MockCommandSender implements Player {
 
     @Override
     public void setFlying(boolean arg0) {
+    }
+
+    @Override
+    public void setFlySpeed(float v) throws IllegalArgumentException {
+
     }
 
     @Override
@@ -797,4 +1074,26 @@ public class MockPlayer extends MockCommandSender implements Player {
     public void updateInventory() {
     }
 
+    @Override
+    public void setScoreboard(Scoreboard s) {}
+
+    @Override
+    public Scoreboard getScoreboard() { return null; }
+
+    @Override
+    public void setResourcePack(String s) {}
+
+    @Override
+    public void setTexturePack(String s) {}
+
+    @Override
+    public float getWalkSpeed() { return 0; }
+
+    @Override
+    public void setWalkSpeed(float v) {}
+
+    @Override
+    public float getFlySpeed() {
+        return 0;
+    }
 }
